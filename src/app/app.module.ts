@@ -18,6 +18,7 @@ import { MatCardModule } from '@angular/material/card';
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAuth,getAuth } from '@angular/fire/auth';
+import { AngularFireModule } from '@angular/fire/compat';
 import { provideDatabase,getDatabase } from '@angular/fire/database';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 
@@ -31,6 +32,7 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
     GameRulesComponent
   ],
   imports: [
+    AngularFireModule.initializeApp(environment.firebase),
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
