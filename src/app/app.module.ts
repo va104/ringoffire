@@ -21,6 +21,7 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire/compat';
 import { provideDatabase,getDatabase } from '@angular/fire/database';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
+import { EditPlayerComponent } from './edit-player/edit-player.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
     GameComponent,
     PlayerComponent,
     DialogAddPlayerComponent,
-    GameRulesComponent
+    GameRulesComponent,
+    EditPlayerComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
