@@ -6,14 +6,14 @@
 <div class="field">
     <div class="card-stack">
         <!-- Card stack -->
-        <img [ngStyle]="{'right.px': i * 5}" *ngFor="let c of [0,1,2,3]; let i = index;" src="assets/img/cards/card_cover.png" alt="">
-        <img (click)="pickCard()" class="top-card" style="right: 25px;" src="assets/img/cards/card_cover.png" alt="">
+        <img [ngStyle]="{'right.px': i * 5}" *ngFor="let c of [0,1,2,3]; let i = index;" src="assets/img/cards/card_cover.svg" alt="">
+        <img (click)="pickCard()" class="top-card" style="right: 25px;" src="assets/img/cards/card_cover.svg" alt="">
         
         <!-- Stack for played Cards -->
-        <img *ngFor="let card of game.playedCards" class="played-card" style="right: 25px" src="assets/img/cards/{{ card }}.png" alt="">
+        <img *ngFor="let card of game.playedCards" class="played-card" style="right: 25px" src="assets/img/cards/{{ card }}.svg" alt="">
         
         <!-- Current card (Animation) -->
-        <img (click)="pickCard()" *ngIf="game.pickCardAnimation" class="pick-card" style="right: 25px;" src="assets/img/cards/{{ game.currentCard }}.png" alt="">
+        <img (click)="pickCard()" *ngIf="game.pickCardAnimation" class="pick-card" style="right: 25px;" src="assets/img/cards/{{ game.currentCard }}.svg" alt="">
     </div>
 </div>
 <app-game-rules [card]="game.currentCard" class="pin-bottom"></app-game-rules>
