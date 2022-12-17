@@ -31,6 +31,8 @@ export class GameRulesComponent implements OnInit, OnChanges {
   ngOnInit(): void {
   }
   
+  // wenn sich ein Input-Parameter ändert
+  // void: gibt nichts zurück
   ngOnChanges() : void {
     if (this.card) {
       let cardNumber = +this.card.split('_')[1];

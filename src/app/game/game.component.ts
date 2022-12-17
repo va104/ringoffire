@@ -13,6 +13,7 @@ import { EditPlayerComponent } from '../edit-player/edit-player.component';
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
+  // die Variable ist vom Typ Game: ist aber noch nicht erstellt
   game: Game;
   gameId: string;
 
@@ -24,6 +25,7 @@ export class GameComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogAddPlayerComponent);
 
+    // Dialog gibt nach dem schließen den Namen (playerName) zurück
     dialogRef.afterClosed().subscribe((name: string) => {
       if(name && name.length > 0)
       this.game.players.push(name);
@@ -69,6 +71,7 @@ export class GameComponent implements OnInit {
   }
   
   pickCard() {
+    // card is clickable every 1,5s possible
     if (!this.game.pickCardAnimation) {
       this.game.currentCard = this.game.stack.pop(); //last element returns the last elem of the array and deletes it
       this.game.pickCardAnimation = true;
