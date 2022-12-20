@@ -63,11 +63,6 @@
     z-index: 1;
 }
 
-.btn-add {
-    position: absolute;
-    right: 32px;
-    bottom: 32px;
-}
 
 .pin-bottom {
     position: absolute;
@@ -82,4 +77,38 @@ app-player {
     &:hover {
         filter: brightness(1.1)
     }
+}
+
+.gameOver {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.preloadImage{
+    opacity: 0;
+    z-index: -9999;
+    height: 0;
+    width: 0;
+    position: absolute;
+}
+
+.gameSettings {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translate(-50%,-50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+::ng-deep .tooltip {
+    font-size: 11px;
+    color: black !important;
+    background-color:white;
+    // border: 1px solid black;
 }
