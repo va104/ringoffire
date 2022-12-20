@@ -1,1 +1,37 @@
-<img class="profile-picture" [mat-dialog-close]="pic" *ngFor="let pic of allProfileImages" src="./assets/img/profile/{{ pic }}" alt="">
+<h1 mat-dialog-title>Edit player</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>Your Name</mat-label>
+    <input matInput [(ngModel)]="editPlayerName.name">
+  </mat-form-field>
+</div>
+<h1 mat-dialog-title>Change Avatar</h1>
+<mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+    <mat-button-toggle 
+        *ngFor="let pic of allProfileImages"  
+        ngDefaultControl
+        [(ngModel)]="editPlayerName.picture"
+        (click)="this.editPlayerName.picture = pic" 
+        value="bold">
+            <img 
+                src="./assets/img/profile/{{ pic }}" 
+                class="profile-picture" 
+            >
+</mat-button-toggle>
+    <!-- <mat-button-toggle value="italic">Italic</mat-button-toggle>
+    <mat-button-toggle value="underline">Underline</mat-button-toggle> -->
+  </mat-button-toggle-group>
+<!-- <img 
+    class="profile-picture" 
+    *ngFor="let pic of allProfileImages" 
+    ngDefaultControl
+    [(ngModel)]="editPlayerName.picture"
+    (click)="this.editPlayerName.picture = pic" 
+    src="./assets/img/profile/{{ pic }}" alt=""
+> -->
+<div mat-dialog-actions>
+    <button mat-stroked-button color="warn" [mat-dialog-close]="'DELETE'" cdkFocusInitial>Delete</button>
+    <button mat-raised-button (click)="dialogRef.close()">Cancel</button>
+    <button mat-raised-button [mat-dialog-close]="editPlayerName" cdkFocusInitial>Ok</button>
+  </div>
+  

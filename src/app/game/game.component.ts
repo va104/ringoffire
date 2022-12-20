@@ -1,11 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { Game } from 'src/models/game';
-import { MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { EditPlayerComponent } from '../edit-player/edit-player.component';
+import { GameOverComponent } from '../game-over/game-over.component';
+import { GameSettingsComponent } from '../game-settings/game-settings.component';
 
+export interface EditPlayerData {
+  name: string;
+  picture: string;
+}
 
 @Component({
   selector: 'app-game',
@@ -13,42 +19,61 @@ import { EditPlayerComponent } from '../edit-player/edit-player.component';
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
-  // die Variable ist vom Typ Game: ist aber noch nicht erstellt
+  // Game is just declared, not initialized
   game: Game;
+  // we need the gameID for updating on firebase
   gameId: string;
+  gameOver = false;
+  cardStack = [0,1,2,3];
+  choosePlayer = false;
 
   constructor(
     public dialog: MatDialog,
     private firestore: AngularFirestore,
-    private route: ActivatedRoute,) {}
+    private route: ActivatedRoute,) { }
 
-  openDialog(): void {
+    openDialogAddPlayer(): void {
     const dialogRef = this.dialog.open(DialogAddPlayerComponent);
 
     // Dialog gibt nach dem schließen den Namen (playerName) zurück
     dialogRef.afterClosed().subscribe((name: string) => {
-      if(name && name.length > 0)
-      this.game.players.push(name);
-      this.game.player_images.push('1.webp');
-      this.safeGameOnFirebase();
+      if (name && name.length > 0) {
+        this.choosePlayer = true;
+        this.game.players.push(name);
+        // use default image  
+        this.game.player_images.push('1.webp');
+        this.safeGameOnFirebase();
+      }
     });
   }
-  
+
+  openDialogGameOver(): void {
+    const dialogRef = this.dialog.open(GameOverComponent);
+
+    dialogRef.afterClosed()
+    .subscribe((newGame) => {
+      if (newGame) {
+        this.startNewGame();
+      }
+    });
+  } 
+
   ngOnInit(): void {
     this.newGame();
-    
-    // get the data of firebase
+
+    // we need the current route with the new game-ID
     this.route.params.subscribe((params) => {
       this.gameId = params['id'];
 
       this
         .firestore
         .collection('games')
+        // subscribe Data with current ID of the route
         .doc(this.gameId)
         .valueChanges()
         .subscribe((game: any) => {
           this.game.players = game.players;
-          this.game.player_images = game.player_images,
+          this.game.player_images = game.player_images;
           this.game.stack = game.stack;
           this.game.playedCards = game.playedCards;
           this.game.currentPlayer = game.currentPlayer;
@@ -58,42 +83,82 @@ export class GameComponent implements OnInit {
     });
   }
 
- safeGameOnFirebase() {
-  this
-  .firestore
-  .collection('games')
-  .doc(this.gameId)
-  .update(this.game.toJson())
- }
+  safeGameOnFirebase() {
+    this
+      .firestore
+      .collection('games')
+      // Update the game of the current Route
+      .doc(this.gameId)
+      .update(this.game.toJson())
+  }
 
   newGame() {
     this.game = new Game();
   }
-  
+
   pickCard() {
+    if(!this.choosePlayer) {
+      this.openDialogAddPlayer();
+      return
+    }
+
+    if(this.game.stack.length == 0) {
+      this.gameOver = true;
+    }
+    
     // card is clickable every 1,5s possible
-    if (!this.game.pickCardAnimation) {
-      this.game.currentCard = this.game.stack.pop(); //last element returns the last elem of the array and deletes it
-      this.game.pickCardAnimation = true;
-      this.safeGameOnFirebase(); 
-      
-      setTimeout(() => {
-        this.game.playedCards.push(this.game.currentCard);
-        this.game.pickCardAnimation = false;   
-        this.game.currentPlayer++;
-        this.game.currentPlayer %= this.game.players.length
-        this.safeGameOnFirebase(); 
-      }, 1500);
+    else if (!this.game.pickCardAnimation) {
+      this.showNextCard();
     }
   }
-
-  editPlayer(playerId: number) {
-    console.log(playerId);
-    const dialogRef = this.dialog.open(EditPlayerComponent);
-    dialogRef.afterClosed().subscribe((change: string) => {
-      console.log(change);
-      this.game.player_images[playerId] = change;
+  
+  showNextCard() {
+    this.game.currentCard = this.game.stack.pop(); //last element returns the last elem of the array and deletes it
+    this.game.pickCardAnimation = true;
+    
+    if(this.game.stack.length <= 3) {
+      this.cardStack.pop();
+    }
+  
+    this.safeGameOnFirebase();
+  
+    setTimeout(() => {
+      this.game.playedCards.push(this.game.currentCard);
+      this.game.pickCardAnimation = false;
+      this.game.currentPlayer++;
+      this.game.currentPlayer %= this.game.players.length
       this.safeGameOnFirebase();
+      if (this.game.stack.length == 0) {
+        this.openDialogGameOver();
+      }
+    }, 1500);
+  }
+
+
+  editPlayer(playerId: number, playerName: string) {
+    const dialogRef = this.dialog.open(EditPlayerComponent, {
+      data: {name: playerName}
     });
+    dialogRef.afterClosed().subscribe((change) => {
+      if (change) {
+        if (change == 'DELETE') {
+          this.game.players.splice(playerId, 1)
+          this.game.player_images.splice(playerId, 1)
+        } else {
+          this.game.player_images[playerId] = change.picture;
+          this.game.players[playerId] = change.name
+        }
+        this.safeGameOnFirebase();
+      }
+    });
+  }
+
+  openDialogChangeSettings(){
+    const dialogRef = this.dialog.open(GameSettingsComponent);  
+  }
+  
+  startNewGame() {
+    this.game.resetGame();
+    this.safeGameOnFirebase();
   }
 }

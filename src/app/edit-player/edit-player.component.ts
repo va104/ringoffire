@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { EditPlayerData } from '../game/game.component';
 
 @Component({
   selector: 'app-edit-player',
@@ -15,10 +17,19 @@ export class EditPlayerComponent implements OnInit {
     'pinguin2.svg',
     'serious-woman.svg',
     'winkboy.svg',
-  ]
+  ];
+  avatarSelected = false;
+  @ViewChild('test', {static: true}) test;
 
-  constructor() { }
+  constructor(
+    public dialogRef: MatDialogRef<EditPlayerComponent>,
+    @Inject(MAT_DIALOG_DATA) public editPlayerName: EditPlayerData,) { }
 
   ngOnInit(): void {
   }
+
+  changeColor() {
+    return this.avatarSelected == true ? '1px solid black' : ''
+  }
+
 }

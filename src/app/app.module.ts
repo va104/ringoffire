@@ -22,6 +22,10 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { provideDatabase,getDatabase } from '@angular/fire/database';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { EditPlayerComponent } from './edit-player/edit-player.component';
+import { GameOverComponent } from './game-over/game-over.component';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import { GameSettingsComponent } from './game-settings/game-settings.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +35,9 @@ import { EditPlayerComponent } from './edit-player/edit-player.component';
     PlayerComponent,
     DialogAddPlayerComponent,
     GameRulesComponent,
-    EditPlayerComponent
+    EditPlayerComponent,
+    GameOverComponent,
+    GameSettingsComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
@@ -44,6 +50,8 @@ import { EditPlayerComponent } from './edit-player/edit-player.component';
     MatInputModule,
     FormsModule,
     MatCardModule,
+    MatButtonToggleModule,
+    MatTooltipModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),
