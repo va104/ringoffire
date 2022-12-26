@@ -20,10 +20,10 @@ export class GameComponent implements OnInit {
   game: Game;
   // we need the gameID for updating on firebase
   gameId: string;
-  gameOver = false;
-  cardStack = [0, 1, 2, 3];
-  choosePlayer = false;
-  backgroundImage = 'floral_bg.svg';
+  gameSettings = {
+    backgroundImage: 'floral_bg.svg',
+    cardCover: 'card_cover_blue.svg'
+  }
 
   constructor(
     public dialog: MatDialog,
@@ -32,6 +32,7 @@ export class GameComponent implements OnInit {
 
   ngOnInit(): void {
     this.newGame();
+    this.localStorageGetArray('gameSettings');
 
     // we need the current route with the new game-ID
     this.route.params.subscribe((params) => {
@@ -46,26 +47,45 @@ export class GameComponent implements OnInit {
         .subscribe((game: any) => {
           this.game.players = game.players;
           this.game.player_images = game.player_images;
+          this.game.countCardStack = game.countCardStack;
           this.game.stack = game.stack;
           this.game.playedCards = game.playedCards;
           this.game.currentPlayer = game.currentPlayer;
           this.game.pickCardAnimation = game.pickCardAnimation;
           this.game.currentCard = game.currentCard;
+          this.game.choosePlayer = game.choosePlayer
         });
     });
   }
+
+
 
   openDialogAddPlayer(): void {
     const dialogRef = this.dialog.open(DialogAddPlayerComponent);
 
     dialogRef.afterClosed().subscribe((playerInfo: EditPlayerData) => {
-      if (playerInfo.name && playerInfo.name.length > 0) {
-        this.choosePlayer = true;
-        this.game.players.push(playerInfo.name); 
+      if (playerInfo && playerInfo.name.length > 0) {
+        this.game.choosePlayer = true;
+        this.game.players.push(playerInfo.name);
         this.game.player_images.push(playerInfo.picture);
         this.safeGameOnFirebase();
       }
     });
+  }
+
+
+  localStorageSetArray(key, array) {
+    localStorage.setItem(key, JSON.stringify(array));
+  }
+
+  localStorageGetArray(key) {
+    const settings = JSON.parse(localStorage.getItem(key));
+    if (settings) {
+      this.gameSettings = {
+        backgroundImage: settings.backgroundImage,
+        cardCover: settings.cardCover
+      }
+    }
   }
 
   openDialogGameOver(): void {
@@ -94,13 +114,9 @@ export class GameComponent implements OnInit {
   }
 
   pickCard() {
-    if (!this.choosePlayer) {
+    if (!this.game.choosePlayer) {
       this.openDialogAddPlayer();
       return
-    }
-
-    if (this.game.stack.length == 0) {
-      this.gameOver = true;
     }
 
     // card is clickable every 1,5s possible
@@ -114,7 +130,7 @@ export class GameComponent implements OnInit {
     this.game.pickCardAnimation = true;
 
     if (this.game.stack.length <= 3) {
-      this.cardStack.pop();
+      this.game.countCardStack.pop();
     }
 
     this.safeGameOnFirebase();
@@ -153,15 +169,22 @@ export class GameComponent implements OnInit {
   openDialogChangeSettings() {
     const dialogRef = this.dialog.open(GameSettingsComponent);
 
-    dialogRef.afterClosed().subscribe((background: string) => {
-      if (background) {
-        this.backgroundImage = background;
+    dialogRef.afterClosed().subscribe((settings) => {
+      if (settings) {
+        if (settings.background) {
+          this.gameSettings.backgroundImage = settings.background;
+        }
+        if (settings.deckCover) {
+          this.gameSettings.cardCover = settings.deckCover;
+        }
       }
+      this.localStorageSetArray('gameSettings', this.gameSettings);
     });
   }
 
   startNewGame() {
     this.game.resetGame();
     this.safeGameOnFirebase();
+    console.log(this.game)
   }
 }

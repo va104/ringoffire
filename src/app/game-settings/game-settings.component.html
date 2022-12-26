@@ -1,15 +1,26 @@
-<h1 mat-dialog-title>Edit player</h1>
-
+<h1 mat-dialog-title>Edit Settings</h1>
+<h2>Change Background</h2>
 <div class="backgroundContainer">
     <img 
-    class="profile-picture" 
-    *ngFor="let background of allBackgroundImages" 
+    #backgroundImg
+    *ngFor="let background of allBackgroundImages; let i = index" 
     ngDefaultControl
     src="./assets/img/backgrounds/{{ background }}" alt=""
-    [mat-dialog-close]="background"  
+    (click)="onBackgroundSelected(background, i)"
+    >
+</div>
+<h2>Change Card Cover</h2>
+<div class="coverContainer">
+    <img 
+    #coverImg
+    *ngFor="let cover of allDeckCovers; let i = index" 
+    ngDefaultControl
+    src="./assets/img/card_cover/{{ cover }}" alt=""
+    (click)="onCoverSelected(cover, i)"
     >
 </div>
 <div mat-dialog-actions>
     <button mat-raised-button (click)="dialogRef.close()">Cancel</button>
+    <button mat-raised-button [mat-dialog-close]="selectedSettings" >Ok</button>
   </div>
   

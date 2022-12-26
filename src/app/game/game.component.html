@@ -8,17 +8,18 @@
     class="player-position" style="top: 130px;">
 </app-player>
 <!-- Game Component -->
-<div *ngIf="gameOver" class="gameOver">
-    <img src="./assets/img/gameOver.png" alt="">
-</div>
+
 <!-- Preloaded transparent image -->
 <img *ngIf="game.stack.length > 1" class="preloadImage" src="assets/img/cards/{{ game.stack[game.stack.length - 1] }}.svg" alt="">
 
-<div class="field" [ngStyle]="{'background-image': 'url(../../assets/img/backgrounds/' + backgroundImage + ')'}">
+<div class="background" [ngStyle]="{'background-image': 'url(../../assets/img/backgrounds/' + this.gameSettings.backgroundImage + ')'}">
+
+</div>
+<div class="field">
     <div class="card-stack">
         <!-- Card stack -->
-        <img [ngStyle]="{'right.px': i * 5}" [ngClass]="{'top-card': game.stack.length <= 4}" (click)="game.stack.length <= 4 && pickCard()" *ngFor="let c of cardStack; let i = index;" src="assets/img/cards/card_cover.svg" alt="">
-        <img *ngIf="game.stack.length > 4" (click)="pickCard()" class="top-card" style="right: 25px;" src="assets/img/cards/card_cover.svg" alt="">
+        <img [ngStyle]="{'right.px': i * 5}" [ngClass]="{'top-card': game.stack.length <= 4}" (click)="game.stack.length <= 4 && pickCard()" *ngFor="let c of game.countCardStack; let i = index;" src="assets/img/card_cover/{{ this.gameSettings.cardCover }}" alt="">
+        <img *ngIf="game.stack.length > 4" (click)="pickCard()" class="top-card" style="right: 25px;" src="assets/img/card_cover/{{ this.gameSettings.cardCover }}" alt="">
         
         <!-- Stack for played Cards -->
         <img *ngFor="let card of game.playedCards" class="played-card" style="right: 25px" src="assets/img/cards/{{ card }}.svg" alt="">
@@ -29,18 +30,16 @@
         
     </div>
 </div>
-<!-- Game Over Screen -->
-<!-- <app-game-over></app-game-over> -->
 
 <!-- Game Rules Component -->
 <app-game-rules [card]="game.currentCard" class="pin-bottom"></app-game-rules>
 
 <!-- Game Setting Icons -->
 <div class="gameSettings">
-    <button mat-mini-fab color="accent" matTooltip="Add players" matTooltipPosition="left" matTooltipClass="tooltip" (click)="openDialogAddPlayer()">
+    <button mat-mini-fab color="accent" matTooltip="Add Players" matTooltipPosition="left" matTooltipClass="tooltip" (click)="openDialogAddPlayer()">
         <mat-icon>add</mat-icon>
       </button>
-    <button mat-mini-fab color="accent" matTooltip="Change Background" matTooltipPosition="left" matTooltipClass="tooltip" (click)="openDialogChangeSettings()">
+    <button mat-mini-fab color="accent" matTooltip="Change Settings" matTooltipPosition="left" matTooltipClass="tooltip" (click)="openDialogChangeSettings()">
         <mat-icon>settings</mat-icon>
       </button>
     <button mat-mini-fab color="accent" matTooltip="Invite Your friends!" matTooltipPosition="left" matTooltipClass="tooltip">

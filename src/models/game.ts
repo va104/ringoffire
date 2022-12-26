@@ -1,14 +1,16 @@
 export class Game {
   public players: string[] = [];
   public player_images: string[] = [];
+  public countCardStack:number[] = [0, 1, 2, 3];
   public stack: string[] = [];
   public playedCards: string[] = [];
   public currentPlayer: number = 0;
   public pickCardAnimation = false;
   public currentCard: string = '';
+  public choosePlayer = false;
 
   constructor() {
-    for (let i = 1; i < 14; i++) {
+    for (let i = 1; i < 2; i++) {
       this.stack.push('spades_' + i);
       this.stack.push('hearts_' + i);
       this.stack.push('diamonds_' + i);
@@ -40,11 +42,13 @@ export class Game {
     return {
       players: this.players,
       player_images: this.player_images,
+      countCardStack: this.countCardStack,
       stack: this.stack,
       playedCards: this.playedCards,
       currentPlayer: this.currentPlayer,
       pickCardAnimation: this.pickCardAnimation,
-      currentCard: this.currentCard
+      currentCard: this.currentCard,
+      choosePlayer: this.choosePlayer,
     }
   }
 
@@ -54,6 +58,7 @@ export class Game {
     this.playedCards = [];
     this.currentCard = '';
     this.currentPlayer = 0;
+    this.countCardStack = [0, 1, 2, 3];
   }
 }
 
