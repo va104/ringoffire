@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Game } from 'src/models/game';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
@@ -8,6 +8,7 @@ import { EditPlayerComponent } from '../edit-player/edit-player.component';
 import { GameOverComponent } from '../game-over/game-over.component';
 import { GameSettingsComponent } from '../game-settings/game-settings.component';
 import { EditPlayerData } from 'src/models/profile-images';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 
 @Component({
@@ -23,7 +24,8 @@ export class GameComponent implements OnInit {
   gameSettings = {
     backgroundImage: 'floral_bg.svg',
     cardCover: 'card_cover_blue.svg'
-  }
+  };
+  @ViewChild('menuTrigger') menuTrigger: MatMenuTrigger;
 
   constructor(
     public dialog: MatDialog,
@@ -187,4 +189,10 @@ export class GameComponent implements OnInit {
     this.safeGameOnFirebase();
     console.log(this.game)
   }
+
+
+  shareGameByEmail() {
+    window.open(`mailto:?subject=Hey, I want to play Ring of Fire with you!&body=Join the game: https://tbd/game/${this.gameId}>`);
+  }
+
 }

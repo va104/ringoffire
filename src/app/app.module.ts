@@ -26,6 +26,10 @@ import { GameOverComponent } from './game-over/game-over.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { GameSettingsComponent } from './game-settings/game-settings.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatMenuModule } from '@angular/material/menu';
+import {MatDividerModule} from '@angular/material/divider';
+import {ClipboardModule} from '@angular/cdk/clipboard';
 
 @NgModule({
   declarations: [
@@ -52,6 +56,10 @@ import { GameSettingsComponent } from './game-settings/game-settings.component';
     MatCardModule,
     MatButtonToggleModule,
     MatTooltipModule,
+    MatExpansionModule,
+    MatMenuModule,
+    MatDividerModule,
+    ClipboardModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),

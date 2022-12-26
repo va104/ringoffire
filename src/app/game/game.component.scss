@@ -64,12 +64,13 @@
     transform: scale(1) translateX(200px) translateY(-230px) rotate(-10deg);
 }
 
-.player-position {
+.container-player{
     position: absolute;
-    right: 0;
-    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-around
 }
-
 
 .pin-bottom {
     position: absolute;
@@ -118,4 +119,11 @@ app-player {
     color: black !important;
     background-color:white;
     // border: 1px solid black;
+}
+
+.invite-friends{
+    cursor: auto;
+    &:hover {
+        background-color: white
+    }
 }
