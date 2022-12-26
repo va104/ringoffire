@@ -14,7 +14,7 @@
 <!-- Preloaded transparent image -->
 <img *ngIf="game.stack.length > 1" class="preloadImage" src="assets/img/cards/{{ game.stack[game.stack.length - 1] }}.svg" alt="">
 
-<div class="field">
+<div class="field" [ngStyle]="{'background-image': 'url(../../assets/img/backgrounds/' + backgroundImage + ')'}">
     <div class="card-stack">
         <!-- Card stack -->
         <img [ngStyle]="{'right.px': i * 5}" [ngClass]="{'top-card': game.stack.length <= 4}" (click)="game.stack.length <= 4 && pickCard()" *ngFor="let c of cardStack; let i = index;" src="assets/img/cards/card_cover.svg" alt="">

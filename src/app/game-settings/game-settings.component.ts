@@ -7,14 +7,14 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./game-settings.component.scss']
 })
 export class GameSettingsComponent implements OnInit {
-  allProfileImages = [
-    '1.webp',
-    '2.png',
-    'monkey.png',
-    'pinguin.svg',
-    'pinguin2.svg',
-    'serious-woman.svg',
-    'winkboy.svg',
+  allBackgroundImages = [
+    'cherries_bg.svg',
+    'christmas_bg.svg',
+    'floral_bg.svg',
+    'halloween_bg.svg',
+    'neon_bg.svg',
+    'stars_bg.svg',
+    'thanksgiving_bg.svg',
   ];
   constructor(public dialogRef: MatDialogRef<GameSettingsComponent>) { }
 

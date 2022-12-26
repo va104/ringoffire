@@ -1,0 +1,12 @@
+.profile-picture{
+    padding: 7px;
+    height: 80px;
+    width: 80px;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+
+    &:hover {
+        scale: 1.2;
+    }
+
+}

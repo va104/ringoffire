@@ -1,14 +1,15 @@
 <h1 mat-dialog-title>Edit player</h1>
 
-<img 
+<div class="backgroundContainer">
+    <img 
     class="profile-picture" 
-    *ngFor="let pic of allProfileImages" 
+    *ngFor="let background of allBackgroundImages" 
     ngDefaultControl
-    src="./assets/img/profile/{{ pic }}" alt=""
->
+    src="./assets/img/backgrounds/{{ background }}" alt=""
+    [mat-dialog-close]="background"  
+    >
+</div>
 <div mat-dialog-actions>
-    <!-- <button mat-stroked-button color="warn" [mat-dialog-close]="'DELETE'" cdkFocusInitial>Delete</button> -->
     <button mat-raised-button (click)="dialogRef.close()">Cancel</button>
-    <!-- <button mat-raised-button [mat-dialog-close]="editPlayerName" cdkFocusInitial>Ok</button> -->
   </div>
   

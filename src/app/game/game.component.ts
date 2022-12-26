@@ -7,11 +7,8 @@ import { ActivatedRoute } from '@angular/router';
 import { EditPlayerComponent } from '../edit-player/edit-player.component';
 import { GameOverComponent } from '../game-over/game-over.component';
 import { GameSettingsComponent } from '../game-settings/game-settings.component';
+import { EditPlayerData } from 'src/models/profile-images';
 
-export interface EditPlayerData {
-  name: string;
-  picture: string;
-}
 
 @Component({
   selector: 'app-game',
@@ -24,39 +21,14 @@ export class GameComponent implements OnInit {
   // we need the gameID for updating on firebase
   gameId: string;
   gameOver = false;
-  cardStack = [0,1,2,3];
+  cardStack = [0, 1, 2, 3];
   choosePlayer = false;
+  backgroundImage = 'floral_bg.svg';
 
   constructor(
     public dialog: MatDialog,
     private firestore: AngularFirestore,
     private route: ActivatedRoute,) { }
-
-    openDialogAddPlayer(): void {
-    const dialogRef = this.dialog.open(DialogAddPlayerComponent);
-
-    // Dialog gibt nach dem schließen den Namen (playerName) zurück
-    dialogRef.afterClosed().subscribe((name: string) => {
-      if (name && name.length > 0) {
-        this.choosePlayer = true;
-        this.game.players.push(name);
-        // use default image  
-        this.game.player_images.push('1.webp');
-        this.safeGameOnFirebase();
-      }
-    });
-  }
-
-  openDialogGameOver(): void {
-    const dialogRef = this.dialog.open(GameOverComponent);
-
-    dialogRef.afterClosed()
-    .subscribe((newGame) => {
-      if (newGame) {
-        this.startNewGame();
-      }
-    });
-  } 
 
   ngOnInit(): void {
     this.newGame();
@@ -83,6 +55,31 @@ export class GameComponent implements OnInit {
     });
   }
 
+  openDialogAddPlayer(): void {
+    const dialogRef = this.dialog.open(DialogAddPlayerComponent);
+
+    dialogRef.afterClosed().subscribe((playerInfo: EditPlayerData) => {
+      if (playerInfo.name && playerInfo.name.length > 0) {
+        this.choosePlayer = true;
+        this.game.players.push(playerInfo.name); 
+        this.game.player_images.push(playerInfo.picture);
+        this.safeGameOnFirebase();
+      }
+    });
+  }
+
+  openDialogGameOver(): void {
+    const dialogRef = this.dialog.open(GameOverComponent);
+
+    dialogRef.afterClosed()
+      .subscribe((newGame) => {
+        if (newGame) {
+          this.startNewGame();
+        }
+      });
+  }
+
+
   safeGameOnFirebase() {
     this
       .firestore
@@ -97,31 +94,31 @@ export class GameComponent implements OnInit {
   }
 
   pickCard() {
-    if(!this.choosePlayer) {
+    if (!this.choosePlayer) {
       this.openDialogAddPlayer();
       return
     }
 
-    if(this.game.stack.length == 0) {
+    if (this.game.stack.length == 0) {
       this.gameOver = true;
     }
-    
+
     // card is clickable every 1,5s possible
     else if (!this.game.pickCardAnimation) {
       this.showNextCard();
     }
   }
-  
+
   showNextCard() {
     this.game.currentCard = this.game.stack.pop(); //last element returns the last elem of the array and deletes it
     this.game.pickCardAnimation = true;
-    
-    if(this.game.stack.length <= 3) {
+
+    if (this.game.stack.length <= 3) {
       this.cardStack.pop();
     }
-  
+
     this.safeGameOnFirebase();
-  
+
     setTimeout(() => {
       this.game.playedCards.push(this.game.currentCard);
       this.game.pickCardAnimation = false;
@@ -137,7 +134,7 @@ export class GameComponent implements OnInit {
 
   editPlayer(playerId: number, playerName: string) {
     const dialogRef = this.dialog.open(EditPlayerComponent, {
-      data: {name: playerName}
+      data: { name: playerName }
     });
     dialogRef.afterClosed().subscribe((change) => {
       if (change) {
@@ -153,10 +150,16 @@ export class GameComponent implements OnInit {
     });
   }
 
-  openDialogChangeSettings(){
-    const dialogRef = this.dialog.open(GameSettingsComponent);  
+  openDialogChangeSettings() {
+    const dialogRef = this.dialog.open(GameSettingsComponent);
+
+    dialogRef.afterClosed().subscribe((background: string) => {
+      if (background) {
+        this.backgroundImage = background;
+      }
+    });
   }
-  
+
   startNewGame() {
     this.game.resetGame();
     this.safeGameOnFirebase();
