@@ -8,14 +8,13 @@ import { EditPlayerComponent } from '../edit-player/edit-player.component';
 import { GameOverComponent } from '../game-over/game-over.component';
 import { GameSettingsComponent } from '../game-settings/game-settings.component';
 import { EditPlayerData } from 'src/models/profile-images';
-import { MatMenuTrigger } from '@angular/material/menu';
-
 
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss']
 })
+
 export class GameComponent implements OnInit {
   // Game is just declared, not initialized
   game: Game;
@@ -60,8 +59,6 @@ export class GameComponent implements OnInit {
     });
   }
 
-
-
   openDialogAddPlayer(): void {
     const dialogRef = this.dialog.open(DialogAddPlayerComponent);
 
@@ -81,6 +78,7 @@ export class GameComponent implements OnInit {
     localStorage.setItem(key, JSON.stringify(array));
   }
 
+
   localStorageGetArray(key) {
     const settings = JSON.parse(localStorage.getItem(key));
     if (settings) {
@@ -90,6 +88,7 @@ export class GameComponent implements OnInit {
       }
     }
   }
+
 
   openDialogGameOver(): void {
     const dialogRef = this.dialog.open(GameOverComponent);
@@ -112,9 +111,11 @@ export class GameComponent implements OnInit {
       .update(this.game.toJson())
   }
 
+
   newGame() {
     this.game = new Game();
   }
+
 
   pickCard() {
     if (!this.game.choosePlayer) {
@@ -127,6 +128,7 @@ export class GameComponent implements OnInit {
       this.showNextCard();
     }
   }
+
 
   showNextCard() {
     this.game.currentCard = this.game.stack.pop(); //last element returns the last elem of the array and deletes it
@@ -170,6 +172,7 @@ export class GameComponent implements OnInit {
     });
   }
 
+
   openDialogChangeSettings() {
     const dialogRef = this.dialog.open(GameSettingsComponent);
 
@@ -186,6 +189,7 @@ export class GameComponent implements OnInit {
     });
   }
 
+
   startNewGame() {
     this.game.resetGame();
     this.safeGameOnFirebase();
@@ -194,7 +198,6 @@ export class GameComponent implements OnInit {
 
 
   shareGameByEmail() {
-    window.open(`mailto:?subject=Hey, I want to play Ring of Fire with you!&body=Join the game: https://tbd/game/${this.gameId}>`);
+    window.open(`mailto:?subject=Hey, I want to play Ring of Fire with you!&body=Join the game: https://ring-of-fire.vanessa-wuerdinger.de/game/${this.gameId}>`);
   }
-
 }
