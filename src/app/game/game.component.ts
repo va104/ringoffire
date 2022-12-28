@@ -25,7 +25,6 @@ export class GameComponent implements OnInit {
     backgroundImage: 'floral_bg.svg',
     cardCover: 'card_cover_blue.svg'
   };
-  @ViewChild('menuTrigger') menuTrigger: MatMenuTrigger;
 
   constructor(
     public dialog: MatDialog,
@@ -55,7 +54,8 @@ export class GameComponent implements OnInit {
           this.game.currentPlayer = game.currentPlayer;
           this.game.pickCardAnimation = game.pickCardAnimation;
           this.game.currentCard = game.currentCard;
-          this.game.choosePlayer = game.choosePlayer
+          this.game.choosePlayer = game.choosePlayer;
+          this.game.countPlayer = game.countPlayer;
         });
     });
   }
@@ -68,6 +68,7 @@ export class GameComponent implements OnInit {
     dialogRef.afterClosed().subscribe((playerInfo: EditPlayerData) => {
       if (playerInfo && playerInfo.name.length > 0) {
         this.game.choosePlayer = true;
+        this.game.countPlayer++;
         this.game.players.push(playerInfo.name);
         this.game.player_images.push(playerInfo.picture);
         this.safeGameOnFirebase();
@@ -157,8 +158,9 @@ export class GameComponent implements OnInit {
     dialogRef.afterClosed().subscribe((change) => {
       if (change) {
         if (change == 'DELETE') {
-          this.game.players.splice(playerId, 1)
-          this.game.player_images.splice(playerId, 1)
+          this.game.players.splice(playerId, 1);
+          this.game.player_images.splice(playerId, 1);
+          this.game.countPlayer--;
         } else {
           this.game.player_images[playerId] = change.picture;
           this.game.players[playerId] = change.name

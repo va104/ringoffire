@@ -8,6 +8,8 @@ export class Game {
   public pickCardAnimation = false;
   public currentCard: string = '';
   public choosePlayer = false;
+  public countPlayer = 0;
+  
 
   constructor() {
     for (let i = 1; i < 14; i++) {
@@ -49,6 +51,7 @@ export class Game {
       pickCardAnimation: this.pickCardAnimation,
       currentCard: this.currentCard,
       choosePlayer: this.choosePlayer,
+      countPlayer: this.countPlayer,
     }
   }
 

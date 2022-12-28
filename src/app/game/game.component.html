@@ -1,14 +1,11 @@
 <!-- Player Component -->
-<div class="container-player">
-    <app-player (click)="editPlayer(i, player)" *ngFor="let player of game.players; let i = index;"
-        [playerActive]="i == game.currentPlayer" [name]="player" [playerImage]="game.player_images[i]"
-        >
-    </app-player>
+<div class="d-flex">
+    <div class="container-player">
+        <app-player (click)="editPlayer(i, player)" *ngFor="let player of game.players; let i = index;"
+            [playerActive]="i == game.currentPlayer" [name]="player" [playerImage]="game.player_images[i]">
+        </app-player>
+    </div>
 </div>
-<!-- <app-player (click)="editPlayer(i, player)" *ngFor="let player of game.players; let i = index;"
-    [ngStyle]="{'top.px': 50 + (i * 70)}" [playerActive]="i == game.currentPlayer" [name]="player"
-    [playerImage]="game.player_images[i]" class="player-position" style="top: 130px;">
-</app-player> -->
 <!-- Game Component -->
 
 <!-- Preloaded transparent image -->
@@ -46,7 +43,11 @@
 
 <!-- Game Setting Icons -->
 <div class="gameSettings">
-    <button mat-mini-fab color="accent" matTooltip="Add Players" matTooltipPosition="left" matTooltipClass="tooltip"
+    <button style="cursor: initial" mat-mini-fab color="accent" matTooltip="Count Players" matTooltipPosition="left" matTooltipClass="tooltip"
+        >
+        <span>{{ game.countPlayer }}/4</span>
+    </button>
+    <button *ngIf="game.countPlayer < 4" mat-mini-fab color="accent" matTooltip="Add Players" matTooltipPosition="left" matTooltipClass="tooltip"
         (click)="openDialogAddPlayer()">
         <mat-icon>add</mat-icon>
     </button>
