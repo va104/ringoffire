@@ -1,0 +1,6 @@
+.ruleCard {
+    @media (max-width: 520px) {
+        max-height: 110px;
+        overflow: scroll;
+    }
+}

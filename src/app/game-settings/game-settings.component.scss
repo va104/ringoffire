@@ -8,7 +8,7 @@
         height: 100px;
         object-fit: cover;
         margin: 20px 20px 0 0;
-        border: 2px solid transparent;
+        border: 3px solid transparent;
         cursor: pointer;
 
         &:hover {
@@ -16,10 +16,16 @@
         }
     }
 
+    @media (max-width: 520px) {
+        flex-wrap: nowrap;
+        overflow: scroll;
+        justify-content: unset;
+        margin-bottom: 20px;
+    }
 }
 
 .background-active {
-    border: 2px solid red !important;
+    border: 3px solid #656578 !important;
     filter: brightness(1.4) !important;
 }
 
@@ -31,7 +37,7 @@
     img {
         height: 100px;
         margin: 20px 20px 0 0;
-        border: 2px solid transparent;
+        border: 3px solid transparent;
         cursor: pointer;
 
         &:hover {
@@ -39,4 +45,16 @@
         }
     }
 
+    @media (max-width: 520px) {
+        flex-wrap: nowrap;
+        overflow: scroll;
+        justify-content: unset;
+    }
+
+}
+
+@media (max-width: 520px) {
+    h2 {
+        margin: 0;   
+    }
 }

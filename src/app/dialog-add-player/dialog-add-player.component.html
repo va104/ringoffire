@@ -1,13 +1,13 @@
 <h1 mat-dialog-title>Add new player</h1>
 <div mat-dialog-content>
   <p>Please enter the name of a player</p>
-  <mat-form-field appearance="fill">
+  <mat-form-field class="mobile-name" appearance="fill">
     <mat-label>Name</mat-label>
     <input matInput [(ngModel)]="editPlayer.name">
   </mat-form-field>
 </div>
 <h1 mat-dialog-title>Choose your Avatar</h1>
-<mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+<mat-button-toggle-group class="mobile" name="fontStyle" aria-label="Font Style">
   <mat-button-toggle *ngFor="let pic of allProfileImages" ngDefaultControl 
     (click)="this.editPlayer.picture = pic" value="bold">
     <img src="./assets/img/profile/{{ pic }}" class="profile-picture">
